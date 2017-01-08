@@ -1,2 +1,3 @@
-# micro_balance
+<img src = "https://github.com/bharatnc/micro_balance/blob/master/micro_balance_logo.png?raw=true" height = "113" width= "427" />
+
 'Micro-Balance' is a Client-Side Load Balancer for handling HTTP requests in Microservices Architecture, from the application level. Although it is written in Java, it is not dependent on the type of tech-stack and can be relatively be implemented in any programming language. Micro-Balance is written on top of the Java Asynchronous HTTP Client library and currently supports the GET and POST methods. Tests have been written for the GET method and development is still in Progress.
