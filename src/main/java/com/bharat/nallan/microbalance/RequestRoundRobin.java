@@ -1,4 +1,4 @@
-package com.bharat.nallan.microbalance;
+package com.bharat.nallan.balancer;
 import org.asynchttpclient.*;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 public class RequestRoundRobin {
+
     private ArrayList<String> hosts = new ArrayList();
     private ArrayList<String> unhealthyHosts = new ArrayList();
     private int node = 0;
@@ -16,6 +17,7 @@ public class RequestRoundRobin {
         this.hosts = hosts;
     }
 
+    //GET Method
     public Response get(String pathName) throws ExecutionException, InterruptedException, IOException {
         int randInt = this.generateRandom(101);
         if(randInt > 95 && this.getSizeUnhealthyNodes() > 0) {
@@ -30,20 +32,6 @@ public class RequestRoundRobin {
                 return responseType;
             }
         }
-    }
-
-    public void nullResponseHandlerForHosts() {
-        this.getUnhealthyHosts().add(this.hosts.get(this.node));
-        this.hosts.remove(this.node);
-        this.node = (this.node + 1) % this.hosts.size();
-    }
-
-    public ArrayList<String> getUnhealthyHosts() {
-        return this.unhealthyHosts;
-    }
-
-    public int getSizeUnhealthyNodes() {
-        return this.getUnhealthyHosts().size();
     }
 
     public Response getResponse(String fullDomain) throws IOException {
@@ -80,10 +68,7 @@ public class RequestRoundRobin {
         return healthResponse;
     }
 
-    public int getUnhealthyNode() {
-        return (this.unhealthyNode + 1) % this.getUnhealthyHosts().size();
-    }
-
+    //POST Method
     public Response post(String pathName, String postContent) throws ExecutionException, InterruptedException, IOException {
         int randInt = this.generateRandom(101);
         if(randInt > 95 && this.getUnhealthyHosts().size() > 0) {
@@ -103,10 +88,12 @@ public class RequestRoundRobin {
     public Response postResponse(String fullDomain, String postContent) throws IOException {
         DefaultAsyncHttpClient asyncHttpClient = new DefaultAsyncHttpClient();
         String jsonContent = postContent;
-
         Response result;
         try {
-            ListenableFuture e = ((BoundRequestBuilder)((BoundRequestBuilder)((BoundRequestBuilder)asyncHttpClient.preparePost(fullDomain).setHeader("Content-Type", "text/html")).setHeader("Content-Length", "" + jsonContent.length())).setBody(jsonContent)).execute();
+            ListenableFuture e = ((BoundRequestBuilder)((BoundRequestBuilder)((BoundRequestBuilder)asyncHttpClient.
+                    preparePost(fullDomain).setHeader("Content-Type", "text/html")).
+                    setHeader("Content-Length", "" + jsonContent.length())).
+                    setBody(jsonContent)).execute();
             Response r = (Response)e.get();
             int st = r.getStatusCode();
             result = r;
@@ -135,11 +122,31 @@ public class RequestRoundRobin {
         return healthResponse;
     }
 
+    public void nullResponseHandlerForHosts() {
+        this.getUnhealthyHosts().add(this.hosts.get(this.node));
+        this.hosts.remove(this.node);
+        this.node = (this.node + 1) % this.hosts.size();
+    }
+
+    public ArrayList<String> getUnhealthyHosts() {
+        return this.unhealthyHosts;
+    }
+
+    public int getSizeUnhealthyNodes() {
+
+        return this.getUnhealthyHosts().size();
+    }
+
     public int generateRandom(int num) {
         int randomNum = (int)Math.floor(Math.random() * (double)num);
         return randomNum;
     }
 
+    public int getUnhealthyNode() {
+        return (this.unhealthyNode + 1) % this.getUnhealthyHosts().size();
+    }
+
+    //Method to write to log file
     public void writeToLog(String fileName, String contentToWrite) {
         try {
             FileWriter ioe = new FileWriter(fileName, true);
@@ -148,6 +155,5 @@ public class RequestRoundRobin {
         } catch (IOException var4) {
             System.err.println("IOException: " + var4.getMessage());
         }
-
     }
 }
