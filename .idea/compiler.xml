@@ -23,10 +23,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="load_balancer_client" />
+        <module name="micro_balance" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="load_balancer_client" target="1.5" />
+      <module name="micro_balance" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
