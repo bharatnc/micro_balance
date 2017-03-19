@@ -8,8 +8,8 @@ Micro-Balance is written on top of the Java Asynchronous HTTP Client library and
 
 ## Features
 
-1. **DONE** GET Method - Testing: heavy_check_mark:
-2. **DONE** POST Method - Testing: heavy_check_mark:
+1. **DONE** GET Method - Testing :heavy_check_mark:
+2. **DONE** POST Method - Testing :heavy_check_mark:
 3. **NOT YET** HEAD Method
 4. **NOT YET** DELETE Method
 5. **NOT YET** UPDATE Method
